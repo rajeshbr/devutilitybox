@@ -107,13 +107,14 @@ const allTimezones = allTimezoneValues.map((tz) => ({
 
 const TimezoneConverter = () => {
   const { toast } = useToast();
-  const [sourceTimezone, setSourceTimezone] = useState("UTC");
+  const [sourceTimezone, setSourceTimezone] = useState("Asia/Kolkata");
   const [sourceOpen, setSourceOpen] = useState(false);
   const [addOpen, setAddOpen] = useState(false);
   const [selectedTimezones, setSelectedTimezones] = useState<string[]>([
-    "America/New_York",
-    "Europe/London",
-    "Asia/Tokyo",
+    "UTC",
+    "America/Santiago",
+    "America/Lima",
+    "America/Bogota",
   ]);
   const [inputTime, setInputTime] = useState("");
   const [inputDate, setInputDate] = useState(() => {
