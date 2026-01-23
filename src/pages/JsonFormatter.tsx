@@ -3,11 +3,12 @@ import { Layout } from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { Braces, Copy, Check, Trash2, Minimize2, Maximize2 } from "lucide-react";
 import { toast } from "sonner";
+import { useLocalStorage } from "@/hooks/useLocalStorage";
 
 const JsonFormatter = () => {
-  const [input, setInput] = useState("");
-  const [output, setOutput] = useState("");
-  const [error, setError] = useState("");
+  const [input, setInput] = useLocalStorage("jsonformatter_input", "");
+  const [output, setOutput] = useLocalStorage("jsonformatter_output", "");
+  const [error, setError] = useLocalStorage("jsonformatter_error", "");
   const [copied, setCopied] = useState(false);
 
   const formatJson = (minify = false) => {

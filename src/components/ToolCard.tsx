@@ -12,23 +12,23 @@ interface ToolCardProps {
 const gradientClasses = {
   cyan: {
     card: "tool-card-cyan",
-    icon: "from-gradient-cyan to-gradient-blue",
-    badge: "bg-gradient-cyan/10 text-gradient-cyan",
+    bgGradient: "from-cyan-400 to-blue-400",
+    badge: "bg-cyan-100 text-cyan-700 dark:bg-cyan-900/30 dark:text-cyan-200",
   },
   pink: {
     card: "tool-card-pink",
-    icon: "from-gradient-pink to-gradient-purple",
-    badge: "bg-gradient-pink/10 text-gradient-pink",
+    bgGradient: "from-pink-400 to-purple-400",
+    badge: "bg-pink-100 text-pink-700 dark:bg-pink-900/30 dark:text-pink-200",
   },
   orange: {
     card: "tool-card-orange",
-    icon: "from-gradient-orange to-gradient-yellow",
-    badge: "bg-gradient-orange/10 text-gradient-orange",
+    bgGradient: "from-orange-400 to-yellow-400",
+    badge: "bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-200",
   },
   purple: {
     card: "tool-card-purple",
-    icon: "from-gradient-purple to-gradient-pink",
-    badge: "bg-gradient-purple/10 text-gradient-purple",
+    bgGradient: "from-purple-400 to-pink-400",
+    badge: "bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-200",
   },
 };
 
@@ -39,13 +39,13 @@ export function ToolCard({ title, description, icon: Icon, path, gradient }: Too
     <Link to={path} className={`tool-card ${classes.card} group block`}>
       {/* Gradient decoration */}
       <div
-        className={`absolute -right-8 -top-8 h-32 w-32 rounded-full bg-gradient-to-br ${classes.icon} opacity-10 blur-2xl transition-all duration-500 group-hover:opacity-20 group-hover:blur-3xl`}
+        className={`absolute -right-8 -top-8 h-32 w-32 rounded-full bg-gradient-to-br ${classes.bgGradient} opacity-10 blur-2xl transition-all duration-500 group-hover:opacity-20 group-hover:blur-3xl`}
       />
 
       <div className="relative">
         {/* Icon */}
         <div
-          className={`mb-4 inline-flex h-14 w-14 items-center justify-center rounded-xl bg-gradient-to-br ${classes.icon}`}
+          className={`mb-4 inline-flex h-14 w-14 items-center justify-center rounded-xl bg-gradient-to-br ${classes.bgGradient}`}
         >
           <Icon className="h-7 w-7 text-white" />
         </div>

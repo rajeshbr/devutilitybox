@@ -5,6 +5,7 @@ import { Layout } from "@/components/Layout";
 import { Card } from "@/components/ui/card";
 import { AlertDialog, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { ArrowRight, ArrowLeft, Trash2, Diff, Braces } from "lucide-react";
+import { useLocalStorage } from "@/hooks/useLocalStorage";
 import "vanilla-jsoneditor/themes/jse-theme-dark.css";
 
 interface JSONContent {
@@ -15,13 +16,15 @@ interface JSONContent {
 export default function JsonEditor() {
   const editorLeftRef = useRef<HTMLDivElement>(null);
   const editorRightRef = useRef<HTMLDivElement>(null);
-  const editorLeftInstanceRef = useRef<JSONEditor | null>(null);
-  const editorRightInstanceRef = useRef<JSONEditor | null>(null);
+  const editorLeftInstanceRef = useRef<any>(null);
+  const editorRightInstanceRef = useRef<any>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [isResizing, setIsResizing] = useState(false);
   const [leftWidth, setLeftWidth] = useState(50);
   const [comparisonResult, setComparisonResult] = useState<string | null>(null);
   const [showComparison, setShowComparison] = useState(false);
+  const [, setLeftContent] = useLocalStorage<JSONContent>("jsoneditor_left", { json: {} });
+  const [, setRightContent] = useLocalStorage<JSONContent>("jsoneditor_right", { json: {} });
 
   useEffect(() => {
     if (editorLeftRef.current && !editorLeftInstanceRef.current) {
@@ -44,6 +47,28 @@ export default function JsonEditor() {
       });
     }
 
+    // Load persisted content
+    const loadPersistedContent = async () => {
+      try {
+        const leftStored = localStorage.getItem("jsoneditor_left");
+        const rightStored = localStorage.getItem("jsoneditor_right");
+        
+        if (leftStored && editorLeftInstanceRef.current) {
+          const parsed = JSON.parse(leftStored);
+          editorLeftInstanceRef.current.set(parsed);
+        }
+        
+        if (rightStored && editorRightInstanceRef.current) {
+          const parsed = JSON.parse(rightStored);
+          editorRightInstanceRef.current.set(parsed);
+        }
+      } catch (error) {
+        console.warn("Failed to load persisted JSON content:", error);
+      }
+    };
+
+    loadPersistedContent();
+
     return () => {
       editorLeftInstanceRef.current?.destroy();
       editorRightInstanceRef.current?.destroy();
@@ -51,6 +76,23 @@ export default function JsonEditor() {
       editorRightInstanceRef.current = null;
     };
   }, []);
+
+  // Save editor content to localStorage whenever it changes
+  useEffect(() => {
+    const saveContent = () => {
+      if (editorLeftInstanceRef.current) {
+        const content = editorLeftInstanceRef.current.get();
+        setLeftContent(content);
+      }
+      if (editorRightInstanceRef.current) {
+        const content = editorRightInstanceRef.current.get();
+        setRightContent(content);
+      }
+    };
+
+    const interval = setInterval(saveContent, 1000); // Save every second
+    return () => clearInterval(interval);
+  }, [setLeftContent, setRightContent]);
 
   const handleMouseDown = () => {
     setIsResizing(true);
@@ -134,8 +176,11 @@ export default function JsonEditor() {
   };
 
   const clearAll = () => {
-    editorLeftInstanceRef.current?.set({ json: {} });
-    editorRightInstanceRef.current?.set({ json: {} });
+    const emptyContent = { json: {} };
+    editorLeftInstanceRef.current?.set(emptyContent);
+    editorRightInstanceRef.current?.set(emptyContent);
+    setLeftContent(emptyContent);
+    setRightContent(emptyContent);
   };
 
   const copyLeftToRight = () => {
@@ -158,75 +203,87 @@ export default function JsonEditor() {
 
   return (
     <Layout>
-      <div className="space-y-6">
-         <div className="inline-flex h-14 w-14 items-center justify-center rounded-xl bg-gradient-to-br from-gradient-cyan to-gradient-blue mb-4">
+      {/* Header */}
+      <div className="mb-8">
+        <div className="inline-flex h-14 w-14 items-center justify-center rounded-xl bg-gradient-to-br from-cyan-400 to-blue-400 mb-4">
           <Braces className="h-7 w-7 text-white" />
         </div>
-        <div>
-          <h1 className="text-3xl font-bold mb-2">JSON Editor</h1>
-          <p className="text-muted-foreground">Edit and compare JSON side by side</p>
-        </div>
+        <h1 className="text-3xl font-bold text-foreground mb-2">JSON Editor</h1>
+        <p className="text-muted-foreground">
+          Edit, compare, and validate JSON data side by side with syntax highlighting
+        </p>
+      </div>
 
-        <div className="flex gap-2 mb-4">
-          {/*<Button onClick={compareJSON} size="sm" className="bg-blue-600 hover:bg-blue-700" title="Find Differences">
-            <Diff className="h-4 w-4" />
-          </Button>*/}
-         
-           <Button variant="ghost" onClick={clearAll}>
+      {/* Actions */}
+      <div className="flex flex-wrap gap-3 mb-6">
+        <Button variant="secondary" onClick={compareJSON}>
+          <Diff className="h-4 w-4" />
+          Compare
+        </Button>
+        
+        <Button variant="secondary" onClick={clearAll}>
           <Trash2 className="h-4 w-4" />
           Clear
         </Button>
-        </div>
+      </div>
 
-        <div ref={containerRef} className="flex gap-0 border border-border rounded-lg overflow-hidden bg-background" style={{ height: "600px" }}>
-          {/* Left Panel */}
+        <div ref={containerRef} className="flex gap-0 border border-border rounded-lg overflow-hidden bg-background shadow-soft" style={{ height: "calc(100vh - 400px)", minHeight: "500px", maxHeight: "800px" }}>
+          {/* Editor 1 Panel */}
           <Card className="p-0 overflow-hidden border-0 rounded-none" style={{ width: `${leftWidth}%` }}>
-            <div className="bg-secondary px-4 py-2 border-b">
-              <h2 className="font-semibold text-sm">Left Panel</h2>
+            <div className="bg-secondary/50 px-4 py-3 border-b border-border flex items-center gap-2">
+              <div className="h-2 w-2 rounded-full bg-cyan-400" />
+              <h2 className="font-semibold text-sm text-foreground">Editor 1</h2>
             </div>
             <div ref={editorLeftRef} style={{ height: "calc(100% - 40px)" }} className="jsfiddle" />
           </Card>
 
           {/* Center Divider with Buttons */}
-          <div className="flex flex-col items-center justify-center gap-2 px-3 bg-secondary/30 hover:bg-secondary/50 transition-colors cursor-col-resize" onMouseDown={handleMouseDown}>
+          <div className="flex flex-col items-center justify-center gap-1 px-2 bg-secondary/20 hover:bg-secondary/40 transition-colors cursor-col-resize group" onMouseDown={handleMouseDown}>
             <Button
               size="sm"
               variant="ghost"
               onClick={copyLeftToRight}
-              title="Copy Left to Right"
-              className="h-8 w-8 p-0"
+              title="Copy Input to Output"
+              className="h-8 w-8 p-0 group-hover:bg-primary/20 transition-colors"
             >
-              <ArrowRight className="h-4 w-4" />
+              <ArrowRight className="h-4 w-4 group-hover:text-primary transition-colors" />
             </Button>
-            <div className="h-8 w-px bg-border" />
+            <div className="h-6 w-px bg-border/50" />
             <Button
               size="sm"
               variant="ghost"
               onClick={copyRightToLeft}
-              title="Copy Right to Left"
-              className="h-8 w-8 p-0"
+              title="Copy Output to Input"
+              className="h-8 w-8 p-0 group-hover:bg-primary/20 transition-colors"
             >
-              <ArrowLeft className="h-4 w-4" />
+              <ArrowLeft className="h-4 w-4 group-hover:text-primary transition-colors" />
             </Button>
           </div>
 
-          {/* Right Panel */}
+          {/* Editor 2 Panel */}
           <Card className="p-0 overflow-hidden border-0 rounded-none" style={{ width: `${100 - leftWidth}%` }}>
-            <div className="bg-secondary px-4 py-2 border-b">
-              <h2 className="font-semibold text-sm">Right Panel</h2>
+            <div className="bg-secondary/50 px-4 py-3 border-b border-border flex items-center gap-2">
+              <div className="h-2 w-2 rounded-full bg-blue-400" />
+              <h2 className="font-semibold text-sm text-foreground">Editor 2</h2>
             </div>
             <div ref={editorRightRef} style={{ height: "calc(100% - 40px)" }} className="jsfiddle" />
           </Card>
         </div>
-      </div>
 
       <AlertDialog open={showComparison} onOpenChange={setShowComparison}>
-        <AlertDialogContent>
+        <AlertDialogContent className="max-w-md">
           <AlertDialogHeader>
-            <AlertDialogTitle>Comparison Result</AlertDialogTitle>
-            <AlertDialogDescription>{comparisonResult}</AlertDialogDescription>
+            <AlertDialogTitle className="flex items-center gap-2">
+              <Diff className="h-5 w-5 text-primary" />
+              Comparison Result
+            </AlertDialogTitle>
+            <AlertDialogDescription className="font-mono text-xs whitespace-pre-wrap">
+              {comparisonResult}
+            </AlertDialogDescription>
           </AlertDialogHeader>
-          <AlertDialogCancel>Close</AlertDialogCancel>
+          <div className="flex justify-end">
+            <AlertDialogCancel>Close</AlertDialogCancel>
+          </div>
         </AlertDialogContent>
       </AlertDialog>
     </Layout>

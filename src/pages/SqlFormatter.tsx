@@ -3,6 +3,7 @@ import { Layout } from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { Database, Copy, Check, Trash2 } from "lucide-react";
 import { toast } from "sonner";
+import { useLocalStorage } from "@/hooks/useLocalStorage";
 
 // Simple SQL formatter
 function formatSQL(sql: string): string {
@@ -55,8 +56,8 @@ function formatSQL(sql: string): string {
 }
 
 const SqlFormatter = () => {
-  const [input, setInput] = useState("");
-  const [output, setOutput] = useState("");
+  const [input, setInput] = useLocalStorage("sqlformatter_input", "");
+  const [output, setOutput] = useLocalStorage("sqlformatter_output", "");
   const [copied, setCopied] = useState(false);
 
   const format = () => {

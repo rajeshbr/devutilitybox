@@ -1,31 +1,95 @@
-# Welcome to your DevUtility project
+# DevUtilityBox
 
-## Project info
+A comprehensive, free web-based developer utility application with 8+ essential tools for developers. Built with modern web technologies and designed with accessibility and data privacy in mind.
 
+## ✨ Features
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+### 8 Developer Tools
+- **Base64 Encoder/Decoder** - Encode and decode Base64 strings instantly
+- **JSON Formatter** - Validate, format, and beautify JSON data
+- **JSON Editor** - Side-by-side JSON comparison and editing with visual diff
+- **List Comparator** - Compare two lists and find differences
+- **SQL Formatter** - Format and beautify SQL queries
+- **Timezone Converter** - Convert times across multiple timezones
+- **Code Editor** - Multi-language code editor with syntax highlighting and pretty-format
+- **JWT Decoder** - Decode and analyze JWT tokens with expiration checking
 
-Follow these steps:
+### Core Capabilities
+- 🔄 **Auto Data Persistence** - All tool inputs and outputs are automatically saved to your browser's localStorage
+- 📱 **Fully Responsive** - Works seamlessly on desktop, tablet, and mobile devices
+- 🎨 **Modern Design** - Beautiful, intuitive UI with light and dark mode support
+- 🔒 **Privacy First** - All processing happens locally in your browser; no data sent to servers
+- ♿ **Accessible** - Built with WCAG 2.1 AA accessibility standards
+
+### Compliance & Privacy
+- 🛡️ **GDPR Compliant** - Comprehensive privacy policy with full data protection documentation
+- 🍪 **Cookie Policy** - Transparent cookie management with granular user consent controls
+- 📋 **Cookie Preferences** - Users can customize which cookies to allow (Essential, Functional, Analytics, Marketing)
+
+## 🚀 Getting Started
+
+### Prerequisites
+Node.js & npm - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+
+### Installation
 
 ```sh
-# Step 1: Clone the repository using the project's Git URL.
+# Clone the repository
 git clone https://github.com/rajeshbr/devutilitybox
 
-# Step 2: Navigate to the project directory.
+# Navigate to the project directory
 cd devutilitybox
 
-# Step 3: Install the necessary dependencies.
+# Install dependencies
 npm i
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+# Start the development server
 npm run dev
 ```
-## What technologies are used for this project?
+
+## 🛠️ Tech Stack
 
 This project is built with:
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+- **React 18+** - UI library
+- **TypeScript** - Type-safe JavaScript
+- **Vite** - Lightning-fast build tool
+- **Tailwind CSS** - Utility-first CSS framework
+- **shadcn/ui** - High-quality UI components
+- **Monaco Editor** - Advanced code editor integration
+- **vanilla-jsoneditor** - JSON comparison and editing
+- **Lucide React** - Icon library
+
+## 📦 Build & Deploy
+
+```sh
+# Build for production
+npm run build
+
+# Preview production build
+npm run preview
+
+# Run linting
+npm run lint
+
+# Run tests
+npm run test
+```
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🔗 Resources
+
+- [Privacy Policy](PRIVACY_POLICY.md) - GDPR-compliant data protection
+- [Cookie Policy](COOKIE_POLICY.md) - Cookie and tracking information
+- [Product Requirements Document](prd.md) - Detailed feature specifications
+
+## 💡 Contributing
+
+Contributions are welcome! Feel free to submit issues and pull requests to help improve DevUtilityBox.
+
+---
+
+**Made with ❤️ for developers, by developers.**

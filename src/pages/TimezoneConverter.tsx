@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
+import { useLocalStorage } from "@/hooks/useLocalStorage";
 
 // All IANA timezones
 const allTimezoneValues = [
@@ -107,20 +108,17 @@ const allTimezones = allTimezoneValues.map((tz) => ({
 
 const TimezoneConverter = () => {
   const { toast } = useToast();
-  const [sourceTimezone, setSourceTimezone] = useState("Asia/Kolkata");
+  const [sourceTimezone, setSourceTimezone] = useLocalStorage("timezone_source", "Asia/Kolkata");
   const [sourceOpen, setSourceOpen] = useState(false);
   const [addOpen, setAddOpen] = useState(false);
-  const [selectedTimezones, setSelectedTimezones] = useState<string[]>([
+  const [selectedTimezones, setSelectedTimezones] = useLocalStorage<string[]>("timezone_selected", [
     "UTC",
     "America/Santiago",
     "America/Lima",
     "America/Bogota",
   ]);
-  const [inputTime, setInputTime] = useState("");
-  const [inputDate, setInputDate] = useState(() => {
-    const today = new Date();
-    return today.toISOString().split("T")[0];
-  });
+  const [inputTime, setInputTime] = useLocalStorage("timezone_inputTime", "");
+  const [inputDate, setInputDate] = useLocalStorage("timezone_inputDate", new Date().toISOString().split("T")[0]);
 
   const availableTimezones = useMemo(() => {
     return allTimezones.filter(

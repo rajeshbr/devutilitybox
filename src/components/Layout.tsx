@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import { Braces, Binary, ListChecks, Database, Clock, Moon, Sun, GitCompare } from "lucide-react";
+import { Braces, Binary, ListChecks, Database, Clock, Moon, Sun, Github, Code, Key } from "lucide-react";
 import { useTheme } from "@/context/ThemeContext";
 import { Button } from "@/components/ui/button";
 
@@ -10,6 +10,8 @@ const tools = [
   { path: "/list-comparator", name: "Lists", icon: ListChecks, color: "orange" },
   { path: "/sql-formatter", name: "SQL", icon: Database, color: "purple" },
   { path: "/timezone", name: "Timezone", icon: Clock, color: "cyan" },
+  { path: "/code-editor", name: "Code", icon: Code, color: "blue" },
+  { path: "/jwt-decoder", name: "JWT", icon: Key, color: "cyan" },
 ];
 
 interface LayoutProps {
@@ -62,6 +64,20 @@ export function Layout({ children }: LayoutProps) {
                 <Sun className="h-4 w-4" />
               )}
             </Button>
+            <a
+              href="https://github.com/rajeshbr/devutilitybox"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Button
+                variant="ghost"
+                size="icon"
+                className="ml-2"
+                title="View on GitHub"
+              >
+                <Github className="h-4 w-4" />
+              </Button>
+            </a>
           </nav>
         </div>
       </header>

@@ -3,15 +3,16 @@ import { Layout } from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { ListChecks, Copy, Check, Trash2 } from "lucide-react";
 import { toast } from "sonner";
+import { useLocalStorage } from "@/hooks/useLocalStorage";
 
 const ListComparator = () => {
-  const [listA, setListA] = useState("");
-  const [listB, setListB] = useState("");
-  const [results, setResults] = useState<{
+  const [listA, setListA] = useLocalStorage("listcomparator_listA", "");
+  const [listB, setListB] = useLocalStorage("listcomparator_listB", "");
+  const [results, setResults] = useLocalStorage<{
     common: string[];
     onlyA: string[];
     onlyB: string[];
-  } | null>(null);
+  } | null>("listcomparator_results", null);
   const [copied, setCopied] = useState<string | null>(null);
 
   const compare = () => {

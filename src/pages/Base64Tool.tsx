@@ -3,6 +3,7 @@ import { Layout } from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { Binary, Copy, Check, Trash2, ArrowDownUp } from "lucide-react";
 import { toast } from "sonner";
+import { useLocalStorage } from "@/hooks/useLocalStorage";
 
 
 /**
@@ -41,9 +42,9 @@ function safeUnicodeDecode(base64String) {
 
 
 const Base64Tool = () => {
-  const [input, setInput] = useState("");
-  const [output, setOutput] = useState("");
-  const [mode, setMode] = useState<"encode" | "decode">("encode");
+  const [input, setInput] = useLocalStorage("base64_input", "");
+  const [output, setOutput] = useLocalStorage("base64_output", "");
+  const [mode, setMode] = useLocalStorage<"encode" | "decode">("base64_mode", "encode");
   const [copied, setCopied] = useState(false);
   const [error, setError] = useState("");
 
@@ -82,6 +83,7 @@ const Base64Tool = () => {
     setInput("");
     setOutput("");
     setError("");
+    setMode("encode");
   };
 
   return (
