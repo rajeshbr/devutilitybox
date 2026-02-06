@@ -149,9 +149,42 @@ const TimezoneConverter = () => {
       if (isNaN(hours) || isNaN(minutes)) return [];
 
       const dateTimeStr = `${inputDate}T${inputTime}:00`;
-      const sourceDate = new Date(dateTimeStr);
+      let sourceDate = new Date(dateTimeStr);
 
       if (isNaN(sourceDate.getTime())) return [];
+
+      // Adjust the date to account for the source timezone
+      // Get what time this date shows in the source timezone
+      const sourceTzFormatter = new Intl.DateTimeFormat("en-US", {
+        timeZone: sourceTimezone,
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        hour12: false,
+      });
+
+      const formatter = new Intl.DateTimeFormat("en-US", {
+        timeZone: sourceTimezone,
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: false,
+      });
+
+      // Get the current time in the source timezone
+      const partsInSourceTz = sourceTzFormatter.formatToParts(sourceDate);
+      const sourceHours = parseInt(partsInSourceTz.find(p => p.type === "hour")?.value || "0");
+      const sourceMinutes = parseInt(partsInSourceTz.find(p => p.type === "minute")?.value || "0");
+
+      // Calculate the difference between what we want and what we have
+      const diffHours = hours - sourceHours;
+      const diffMinutes = minutes - sourceMinutes;
+
+      // Adjust the date by this difference
+      sourceDate.setHours(sourceDate.getHours() + diffHours);
+      sourceDate.setMinutes(sourceDate.getMinutes() + diffMinutes);
 
       const allTzValues = [
         sourceTimezone,
@@ -279,6 +312,10 @@ const TimezoneConverter = () => {
                             value={tz.label}
                             onSelect={() => {
                               setSourceTimezone(tz.value);
+                              // Remove from selected timezones if it was there
+                              if (selectedTimezones.includes(tz.value)) {
+                                setSelectedTimezones(selectedTimezones.filter(t => t !== tz.value));
+                              }
                               setSourceOpen(false);
                             }}
                           >
