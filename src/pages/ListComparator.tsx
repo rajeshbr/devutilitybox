@@ -1,7 +1,17 @@
 import { useState } from "react";
 import { Layout } from "@/components/Layout";
 import { Button } from "@/components/ui/button";
-import { ListChecks, Copy, Check, Trash2 } from "lucide-react";
+import {
+  ListChecks,
+  Copy,
+  Check,
+  Trash2,
+  ArrowUpAZ,
+  Scissors,
+  Layers,
+  ArrowUp,
+  ArrowDown,
+} from "lucide-react";
 import { toast } from "sonner";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
 
@@ -47,6 +57,60 @@ const ListComparator = () => {
   const loadSample = () => {
     setListA("apple\nbanana\ncherry\ndate\nelderberry");
     setListB("banana\ncherry\nfig\ngrape\ndate");
+  };
+
+  const processListA = (fn: (list: string) => string) => {
+    setListA(fn(listA));
+  };
+
+  const processListB = (fn: (list: string) => string) => {
+    setListB(fn(listB));
+  };
+
+  const sortLines = (list: string) => {
+    return list
+      .split("\n")
+      .sort()
+      .join("\n");
+  };
+
+  const sortLinesReverse = (list: string) => {
+    return list
+      .split("\n")
+      .sort()
+      .reverse()
+      .join("\n");
+  };
+
+  const trimLines = (list: string) => {
+    return list
+      .split("\n")
+      .map((line) => line.trim())
+      .join("\n");
+  };
+
+  const removeDuplicates = (list: string) => {
+    const lines = list.split("\n");
+    const seen = new Set<string>();
+    return lines
+      .filter((line) => {
+        if (seen.has(line.trim())) return false;
+        seen.add(line.trim());
+        return true;
+      })
+      .join("\n");
+  };
+
+  const toUppercase = (list: string) => {
+    return list.toUpperCase();
+  };
+
+  const toLowercase = (list: string) => {
+    return list.toLowerCase();
+  };
+
+  const getLineCount = (list: string) => {
+    return list.split("\n").filter((line) => line.trim().length > 0).length;
   };
 
   const ResultSection = ({
@@ -130,7 +194,10 @@ const ListComparator = () => {
       {/* Lists Input */}
       <div className="grid gap-6 lg:grid-cols-2 mb-8">
         <div className="space-y-3">
-          <label className="text-sm font-medium text-foreground">List A (one item per line)</label>
+          <div className="flex items-center justify-between">
+            <label className="text-sm font-medium text-foreground">List A (one item per line)</label>
+            <span className="text-xs text-muted-foreground">Lines: {getLineCount(listA)}</span>
+          </div>
           <textarea
             value={listA}
             onChange={(e) => setListA(e.target.value)}
@@ -138,9 +205,66 @@ const ListComparator = () => {
             className="code-editor h-[250px]"
             spellCheck={false}
           />
+          <div className="flex flex-wrap gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => processListA(sortLines)}
+              title="Sort alphabetically"
+            >
+              <ArrowUpAZ className="h-3.5 w-3.5 mr-1" />
+              Sort
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => processListA(sortLinesReverse)}
+              title="Sort reverse"
+            >
+              <ArrowDown className="h-3.5 w-3.5 mr-1" />
+              Reverse
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => processListA(trimLines)}
+              title="Trim whitespace"
+            >
+              <Scissors className="h-3.5 w-3.5 mr-1" />
+              Trim
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => processListA(removeDuplicates)}
+              title="Remove duplicates"
+            >
+              <Layers className="h-3.5 w-3.5 mr-1" />
+              Deduplicate
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => processListA(toUppercase)}
+              title="Convert to uppercase"
+            >
+              A
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => processListA(toLowercase)}
+              title="Convert to lowercase"
+            >
+              a
+            </Button>
+          </div>
         </div>
         <div className="space-y-3">
-          <label className="text-sm font-medium text-foreground">List B (one item per line)</label>
+          <div className="flex items-center justify-between">
+            <label className="text-sm font-medium text-foreground">List B (one item per line)</label>
+            <span className="text-xs text-muted-foreground">Lines: {getLineCount(listB)}</span>
+          </div>
           <textarea
             value={listB}
             onChange={(e) => setListB(e.target.value)}
@@ -148,6 +272,60 @@ const ListComparator = () => {
             className="code-editor h-[250px]"
             spellCheck={false}
           />
+          <div className="flex flex-wrap gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => processListB(sortLines)}
+              title="Sort alphabetically"
+            >
+              <ArrowUpAZ className="h-3.5 w-3.5 mr-1" />
+              Sort
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => processListB(sortLinesReverse)}
+              title="Sort reverse"
+            >
+              <ArrowDown className="h-3.5 w-3.5 mr-1" />
+              Reverse
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => processListB(trimLines)}
+              title="Trim whitespace"
+            >
+              <Scissors className="h-3.5 w-3.5 mr-1" />
+              Trim
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => processListB(removeDuplicates)}
+              title="Remove duplicates"
+            >
+              <Layers className="h-3.5 w-3.5 mr-1" />
+              Deduplicate
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => processListB(toUppercase)}
+              title="Convert to uppercase"
+            >
+              A
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => processListB(toLowercase)}
+              title="Convert to lowercase"
+            >
+              a
+            </Button>
+          </div>
         </div>
       </div>
 

@@ -32,7 +32,7 @@ export default function JsonEditor() {
         target: editorLeftRef.current,
         props: {
           content: { json: {} },
-          mode: "tree",
+          mode: "text",
         },
       });
     }
