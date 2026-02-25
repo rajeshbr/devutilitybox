@@ -10,9 +10,7 @@ import JsonFormatter from "./pages/JsonFormatter";
 import JsonEditor from "./pages/JsonEditor";
 import Base64Tool from "./pages/Base64Tool";
 import ListComparator from "./pages/ListComparator";
-import SqlFormatter from "./pages/SqlFormatter";
 import TimezoneConverter from "./pages/TimezoneConverter";
-import CodeEditor from "./pages/CodeEditor";
 import JwtDecoder from "./pages/JwtDecoder";
 import NotFound from "./pages/NotFound";
 
@@ -32,9 +30,7 @@ const App = () => (
             <Route path="/json-editor" element={<JsonEditor />} />
             <Route path="/base64" element={<Base64Tool />} />
             <Route path="/list-comparator" element={<ListComparator />} />
-            <Route path="/sql-formatter" element={<SqlFormatter />} />
             <Route path="/timezone" element={<TimezoneConverter />} />
-            <Route path="/code-editor" element={<CodeEditor />} />
             <Route path="/jwt-decoder" element={<JwtDecoder />} />
             <Route path="*" element={<NotFound />} />
           </Routes>

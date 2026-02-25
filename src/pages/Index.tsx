@@ -1,4 +1,4 @@
-import { Braces, Binary, ListChecks, Database, Clock, Sparkles, Code, Key } from "lucide-react";
+import { Braces, Binary, ListChecks, Clock, Sparkles, Key } from "lucide-react";
 import { ToolCard } from "@/components/ToolCard";
 import { Layout } from "@/components/Layout";
 
@@ -27,25 +27,11 @@ const tools = [
     gradient: "orange" as const,
   },
   {
-    title: "SQL Formatter",
-    description: "Format and beautify SQL queries for better readability",
-    icon: Database,
-    path: "/sql-formatter",
-    gradient: "purple" as const,
-  },
-  {
     title: "Timezone Converter",
     description: "Convert time between different world timezones instantly",
     icon: Clock,
     path: "/timezone",
     gradient: "cyan" as const,
-  },
-  {
-    title: "Code Editor",
-    description: "Edit and format code with syntax highlighting for 20+ languages",
-    icon: Code,
-    path: "/code-editor",
-    gradient: "purple" as const,
   },
   {
     title: "JWT Decoder",
@@ -78,14 +64,14 @@ const Index = () => {
         </h1>
 
         <p className="mx-auto max-w-2xl text-lg text-muted-foreground mb-12">
-          A collection of essential utilities for developers. Format JSON, edit code, decode JWTs, 
-          encode Base64, compare lists, beautify SQL, and convert timezones — all in one place.
+          A collection of essential utilities for developers. Format JSON, encode Base64, decode JWTs, 
+          compare lists, and convert timezones — all in one place.
         </p>
 
         {/* Stats */}
         <div className="flex justify-center gap-12 mb-16">
           <div className="text-center">
-            <div className="text-3xl font-bold gradient-text">7</div>
+            <div className="text-3xl font-bold gradient-text">5</div>
             <div className="text-sm text-muted-foreground">Tools</div>
           </div>
           <div className="text-center">

@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import { Braces, Binary, ListChecks, Database, Clock, Moon, Sun, Github, Code, Key, Twitter, Linkedin, Facebook, Mail } from "lucide-react";
+import { Braces, Binary, ListChecks, Clock, Moon, Sun, Github, Key, Twitter, Linkedin, Facebook, Mail } from "lucide-react";
 import { useTheme } from "@/context/ThemeContext";
 import { Button } from "@/components/ui/button";
 
@@ -8,9 +8,7 @@ const tools = [
   { path: "/json-editor", name: "JSON Editor", icon: Braces, color: "cyan" },
   { path: "/base64", name: "Base64", icon: Binary, color: "pink" },
   { path: "/list-comparator", name: "Lists", icon: ListChecks, color: "orange" },
-  { path: "/sql-formatter", name: "SQL", icon: Database, color: "purple" },
   { path: "/timezone", name: "Timezone", icon: Clock, color: "cyan" },
-  { path: "/code-editor", name: "Code", icon: Code, color: "blue" },
   { path: "/jwt-decoder", name: "JWT", icon: Key, color: "cyan" },
 ];
 
