@@ -166,7 +166,7 @@ export function Layout({ children }: LayoutProps) {
           {/* Copyright */}
           <div className="border-t border-border/40 mt-8 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-muted-foreground">
             <p>&copy; 2026 DevUtilityBox. All rights reserved.</p>
-            <p>Made with ❤️ for developers, by developers.</p>
+            <p>Made with ❤️ for developers, powered by vibe coding.</p>
           </div>
         </div>
       </footer>
