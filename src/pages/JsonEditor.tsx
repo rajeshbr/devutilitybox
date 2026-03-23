@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Layout } from "@/components/Layout";
 import { Card } from "@/components/ui/card";
 import { AlertDialog, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
-import { ArrowRight, ArrowLeft, Trash2, Diff, Braces } from "lucide-react";
+import { ArrowRight, ArrowLeft, Trash2, Diff, Braces, Maximize2, Minimize2 } from "lucide-react";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
 import "vanilla-jsoneditor/themes/jse-theme-dark.css";
 
@@ -23,6 +23,7 @@ export default function JsonEditor() {
   const [leftWidth, setLeftWidth] = useState(50);
   const [comparisonResult, setComparisonResult] = useState<string | null>(null);
   const [showComparison, setShowComparison] = useState(false);
+  const [maximized, setMaximized] = useState<'none' | 'left' | 'right'>('none');
   const [, setLeftContent] = useLocalStorage<JSONContent>("jsoneditor_left", { json: {} });
   const [, setRightContent] = useLocalStorage<JSONContent>("jsoneditor_right", { json: {} });
 
@@ -95,7 +96,9 @@ export default function JsonEditor() {
   }, [setLeftContent, setRightContent]);
 
   const handleMouseDown = () => {
-    setIsResizing(true);
+    if (maximized === 'none') {
+      setIsResizing(true);
+    }
   };
 
   useEffect(() => {
@@ -229,16 +232,27 @@ export default function JsonEditor() {
 
         <div ref={containerRef} className="flex gap-0 border border-border rounded-lg overflow-hidden bg-background shadow-soft" style={{ height: "calc(100vh - 400px)", minHeight: "500px", maxHeight: "800px" }}>
           {/* Editor 1 Panel */}
-          <Card className="p-0 overflow-hidden border-0 rounded-none" style={{ width: `${leftWidth}%` }}>
-            <div className="bg-secondary/50 px-4 py-3 border-b border-border flex items-center gap-2">
-              <div className="h-2 w-2 rounded-full bg-cyan-400" />
-              <h2 className="font-semibold text-sm text-foreground">Editor 1</h2>
+          <Card className="p-0 overflow-hidden border-0 rounded-none" style={{ width: maximized === 'left' ? '100%' : `${leftWidth}%`, display: maximized === 'right' ? 'none' : 'block' }}>
+            <div className="bg-secondary/50 px-4 py-3 border-b border-border flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <div className="h-2 w-2 rounded-full bg-cyan-400" />
+                <h2 className="font-semibold text-sm text-foreground">Editor 1</h2>
+              </div>
+              <Button
+                size="sm"
+                variant="ghost"
+                onClick={() => setMaximized(maximized === 'left' ? 'none' : 'left')}
+                title={maximized === 'left' ? 'Minimize' : 'Maximize'}
+                className="h-6 w-6 p-0"
+              >
+                {maximized === 'left' ? <Minimize2 className="h-3 w-3" /> : <Maximize2 className="h-3 w-3" />}
+              </Button>
             </div>
             <div ref={editorLeftRef} style={{ height: "calc(100% - 40px)" }} className="jsfiddle" />
           </Card>
 
           {/* Center Divider with Buttons */}
-          <div className="flex flex-col items-center justify-center gap-1 px-2 bg-secondary/20 hover:bg-secondary/40 transition-colors cursor-col-resize group" onMouseDown={handleMouseDown}>
+          <div className={`flex flex-col items-center justify-center gap-1 px-2 bg-secondary/20 hover:bg-secondary/40 transition-colors cursor-col-resize group ${maximized !== 'none' ? 'hidden' : ''}`} onMouseDown={handleMouseDown}>
             <Button
               size="sm"
               variant="ghost"
@@ -261,10 +275,21 @@ export default function JsonEditor() {
           </div>
 
           {/* Editor 2 Panel */}
-          <Card className="p-0 overflow-hidden border-0 rounded-none" style={{ width: `${100 - leftWidth}%` }}>
-            <div className="bg-secondary/50 px-4 py-3 border-b border-border flex items-center gap-2">
-              <div className="h-2 w-2 rounded-full bg-blue-400" />
-              <h2 className="font-semibold text-sm text-foreground">Editor 2</h2>
+          <Card className="p-0 overflow-hidden border-0 rounded-none" style={{ width: maximized === 'right' ? '100%' : `${100 - leftWidth}%`, display: maximized === 'left' ? 'none' : 'block' }}>
+            <div className="bg-secondary/50 px-4 py-3 border-b border-border flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <div className="h-2 w-2 rounded-full bg-blue-400" />
+                <h2 className="font-semibold text-sm text-foreground">Editor 2</h2>
+              </div>
+              <Button
+                size="sm"
+                variant="ghost"
+                onClick={() => setMaximized(maximized === 'right' ? 'none' : 'right')}
+                title={maximized === 'right' ? 'Minimize' : 'Maximize'}
+                className="h-6 w-6 p-0"
+              >
+                {maximized === 'right' ? <Minimize2 className="h-3 w-3" /> : <Maximize2 className="h-3 w-3" />}
+              </Button>
             </div>
             <div ref={editorRightRef} style={{ height: "calc(100% - 40px)" }} className="jsfiddle" />
           </Card>
