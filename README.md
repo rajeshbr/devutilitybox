@@ -8,12 +8,9 @@ A comprehensive, free web-based developer utility application with 8+ essential 
 
 ### 8 Developer Tools
 - **Base64 Encoder/Decoder** - Encode and decode Base64 strings instantly
-- **JSON Formatter** - Validate, format, and beautify JSON data
 - **JSON Editor** - Side-by-side JSON comparison and editing with visual diff
 - **List Comparator** - Compare two lists and find differences
-- **SQL Formatter** - Format and beautify SQL queries
 - **Timezone Converter** - Convert times across multiple timezones
-- **Code Editor** - Multi-language code editor with syntax highlighting and pretty-format
 - **JWT Decoder** - Decode and analyze JWT tokens with expiration checking
 
 ### Core Capabilities
@@ -58,7 +55,6 @@ This project is built with:
 - **Vite** - Lightning-fast build tool
 - **Tailwind CSS** - Utility-first CSS framework
 - **shadcn/ui** - High-quality UI components
-- **Monaco Editor** - Advanced code editor integration
 - **vanilla-jsoneditor** - JSON comparison and editing
 - **Lucide React** - Icon library
 
@@ -94,4 +90,4 @@ Contributions are welcome! Feel free to submit issues and pull requests to help 
 
 ---
 
-**Made with ❤️ for developers, by developers.**
+**Made with ❤️ for developers, powered by vibe coding.**
